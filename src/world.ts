@@ -438,6 +438,26 @@ export class World {
 
   }
 
+  onSort(): void {
+    if (this.isHolding()) {
+        return;
+    }
+    const slots = Array.from(Array(14).keys())
+                       .map(n => "hand."+n.toString()+"@"+this.seat.toString())
+                       .filter(x => this.slots.has(x))
+                       .map(x => this.slots.get(x))
+
+    const things = slots.filter(s => s.thing !== null)
+                        .map(s => s.thing)
+                        .filter(s => s.type === ThingType.TILE)
+                        .sort((a, b) => a.getSortedTypeIndex() - b.getSortedTypeIndex());
+    console.log(slots);
+    console.log(things);
+    things.forEach(t => t.prepareMove());
+    things.forEach((t, i) => t.moveTo(slots[i]));
+    this.sendUpdate();
+  }
+
   onFlip(direction: number, animated?: boolean): void {
     if (this.isHolding()) {
       return;

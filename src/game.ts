@@ -156,6 +156,9 @@ export class Game {
         this.settings.perspective.checked = !this.settings.perspective.checked;
         this.updateSettings();
         break;
+      case 's':
+        this.world.onSort();
+        break;
     }
   }
 
