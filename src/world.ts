@@ -193,6 +193,7 @@ export class World {
           w: thing.heldRotation.w,
       },
       shiftSlotName: thing.shiftSlot?.name ?? null,
+      typeIndex: thing.typeIndex
     };
   }
 
@@ -438,23 +439,92 @@ export class World {
 
   }
 
-  onSort(): void {
+  onSort(includeExtra? : boolean): void {
     if (this.isHolding()) {
         return;
     }
     const slots = Array.from(Array(14).keys())
                        .map(n => "hand."+n.toString()+"@"+this.seat.toString())
                        .filter(x => this.slots.has(x))
-                       .map(x => this.slots.get(x))
+                       .map(x => this.slots.get(x));
 
+    if (includeExtra && this.slots.has("hand.extra@"+this.seat.toString())) {
+      slots.push(this.slots.get("hand.extra@"+this.seat.toString()));
+    }
+    
     const things = slots.filter(s => s.thing !== null)
                         .map(s => s.thing)
                         .filter(s => s.type === ThingType.TILE)
                         .sort((a, b) => a.getSortedTypeIndex() - b.getSortedTypeIndex());
-    console.log(slots);
-    console.log(things);
     things.forEach(t => t.prepareMove());
     things.forEach((t, i) => t.moveTo(slots[i]));
+    this.sendUpdate();
+  }
+
+  tsubame(): void {
+    console.log('attempting tsubame');
+    if (this.isHolding()) {
+      return;
+    }
+    
+    const handslots = Array.from(Array(14).keys())
+                       .map(n => "hand."+n.toString()+"@"+this.seat.toString())
+                       .filter(x => this.slots.has(x))
+                       .map(x => this.slots.get(x));
+ 
+    const wallslots = [];
+    for (var i=0; i<=18; i++) {
+        for (var j=0; j<=1; j++) {
+            for (var k=0; k<4; k++) {
+                const s = "wall." + i.toString() + "." + j.toString() + "@" + k.toString();
+                if (this.slots.has(s) && this.slots.get(s).thing) {
+                    wallslots.push(this.slots.get(s));
+                }
+            }
+        }
+    }
+
+    const accessibleThings = wallslots.map(s => s.thing);
+    accessibleThings.concat(handslots.filter(s => s.thing).map(s => s.thing));
+
+    const trips = [];
+    for(var i=0; i<=100; i++) {
+        const currTrip = [];
+        for (const tile of accessibleThings) {
+            if (tile.typeIndex === i) {
+                currTrip.push(tile);
+            }
+            if (currTrip.length >= 3) {
+                trips.push(currTrip);
+                break;
+            }
+        }
+        if (trips.length >= 5) {
+            break;
+        }
+    }
+    if (trips.length < 5) {
+        return;
+    }
+    const wanted = trips.flat();
+    wanted.pop();
+    
+    var targetSlots = handslots;
+
+    for (const tile of wanted) {
+        if (tile.slot.name.startsWith('hand')) {
+            targetSlots = targetSlots.filter(x => x.name !== tile.slot.name);
+        } else {
+            const targetSlot = targetSlots.pop();
+            const targetTile = targetSlot.thing;
+            const thisSlot = tile.slot; 
+            tile.prepareMove();
+            targetTile.prepareMove();
+            tile.moveTo(targetSlot);
+            targetTile.moveTo(thisSlot);
+        }
+    }
+
     this.sendUpdate();
   }
 

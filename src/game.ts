@@ -159,6 +159,14 @@ export class Game {
       case 's':
         this.world.onSort();
         break;
+      case 'S':
+        this.world.onSort(true);
+        break;
+        /*
+      case 'g':
+        this.world.tsubame();
+        break;
+        */
     }
   }
 

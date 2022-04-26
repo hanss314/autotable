@@ -88,7 +88,7 @@ export class Thing {
 
   // Correctly return sorted type index for red dora
   getSortedTypeIndex(): number {
-    if (this.type !== ThingType.TILE || this.typeIndex === null || this.typeIndex < 34) {
+    if (this.type !== ThingType.TILE || this.typeIndex === null) {
       return this.typeIndex;
     }
     switch (this.typeIndex) {
@@ -98,6 +98,12 @@ export class Thing {
         return 12.5
       case 36:
         return 21.5
+      case 71: 
+        return 40.5
+      case 72:
+        return 49.5
+      case 73:
+        return 58.5
       default:
         return this.typeIndex;
     }
