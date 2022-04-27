@@ -133,6 +133,45 @@ const START: Record<string, Slot> = {
     canFlipMultiple: true,
     rotateHeld: true,
   }),
+  
+  'hand.twelveright': new Slot({
+    name: `hand.twelveright`,
+    group: `hand`,
+    origin: new Vector3(
+      46 + 14.5*Size.TILE.x,
+      0,
+      0,
+    ),
+    rotations: [Rotation.FACE_UP_SIDEWAYS, Rotation.FACE_UP],
+    canFlipMultiple: true,
+    rotateHeld: true,
+  }),
+  
+  'hand.twelveleft': new Slot({
+    name: `hand.twelveleft`,
+    group: `hand`,
+    origin: new Vector3(
+      46 - 2*Size.TILE.x,
+      0,
+      0,
+    ),
+    rotations: [Rotation.FACE_UP_SIDEWAYS, Rotation.FACE_UP],
+    canFlipMultiple: true,
+    rotateHeld: true,
+  }),
+  
+  'hand.twelvemid': new Slot({
+    name: `hand.twelvemid`,
+    group: `hand`,
+    origin: new Vector3(
+      46 + 7*Size.TILE.x,
+      10,
+      0,
+    ),
+    rotations: [Rotation.FACE_UP, Rotation.FACE_UP_SIDEWAYS],
+    canFlipMultiple: true,
+    rotateHeld: true,
+  }),
 
   'meld': new Slot({
     name: `meld`,
@@ -299,7 +338,9 @@ export const SLOT_GROUPS: Record<GameType, Array<SlotGroup>> = {
   
   TWELVE_TILE: [
     [start('hand'), row(14, undefined, {shift: true}), seats()],
-    [start('hand.extra'), seats()],
+    [start('hand.twelveleft'), seats()],
+    [start('hand.twelveright'), seats()],
+    [start('hand.twelvemid'), seats()],
     [start('meld'), column(4), row(4, -Size.TILE.x, {push: true, shift: true}), seats()],
     [start('wall'), row(19), stack(), seats()],
     [start('discard'), column(3, -Size.TILE.y), row(6, undefined, {push: true}), seats()],
