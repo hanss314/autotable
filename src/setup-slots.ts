@@ -130,8 +130,6 @@ const START: Record<string, Slot> = {
       0,
     ),
     rotations: [Rotation.STANDING, Rotation.FACE_UP, Rotation.FACE_DOWN],
-    canFlipMultiple: true,
-    rotateHeld: true,
   }),
   
   'hand.twelveright': new Slot({
@@ -142,9 +140,7 @@ const START: Record<string, Slot> = {
       0,
       0,
     ),
-    rotations: [Rotation.FACE_UP_SIDEWAYS, Rotation.FACE_UP],
-    canFlipMultiple: true,
-    rotateHeld: true,
+    rotations: [Rotation.FACE_UP_SIDEWAYS, Rotation.FACE_UP, Rotation.FACE_DOWN],
   }),
   
   'hand.twelveleft': new Slot({
@@ -155,9 +151,7 @@ const START: Record<string, Slot> = {
       0,
       0,
     ),
-    rotations: [Rotation.FACE_UP_SIDEWAYS, Rotation.FACE_UP],
-    canFlipMultiple: true,
-    rotateHeld: true,
+    rotations: [Rotation.FACE_UP_SIDEWAYS, Rotation.FACE_UP, Rotation.FACE_DOWN],
   }),
   
   'hand.twelvemid': new Slot({
@@ -168,7 +162,7 @@ const START: Record<string, Slot> = {
       10,
       0,
     ),
-    rotations: [Rotation.FACE_UP, Rotation.FACE_UP_SIDEWAYS],
+    rotations: [Rotation.FACE_UP, Rotation.FACE_UP_SIDEWAYS, Rotation.FACE_DOWN],
     canFlipMultiple: true,
     rotateHeld: true,
   }),

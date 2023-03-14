@@ -74,6 +74,7 @@ export class ClientUi {
   getUrl(): string {
     // @ts-ignore
     const env = process.env.NODE_ENV;
+    return 'wss://pwmarcz.pl/autotable/ws';
 
     if (env !== 'production') {
       return 'ws://localhost:1235';
